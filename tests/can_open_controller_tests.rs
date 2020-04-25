@@ -1,7 +1,7 @@
 extern crate canopen_rs;
 
-use canopen_rs::canopen::CanMessage;
-use canopen_rs::canopen::CanOpenController;
+use canopen_rs::controller::CanOpenController;
+use canopen_rs::message::CanMessage;
 
 #[test]
 fn test_can_open_controller_basic_usage() {
