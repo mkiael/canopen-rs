@@ -1,7 +1,13 @@
 use std::collections::HashMap;
 use std::string::String;
 
-pub enum Object {
+#[derive(Hash, Eq, PartialEq)]
+pub struct ObjectKey {
+    index: u16,
+    sub_index: u8,
+}
+
+pub enum ObjectValue {
     Boolean(bool),
     Integer8(i8),
     Integer16(i16),
@@ -16,29 +22,27 @@ pub enum Object {
 }
 
 pub struct ObjectDictionary {
-    pub dict: HashMap<u16, Object>
+    dict: HashMap<ObjectKey, ObjectValue>
 }
 
 impl ObjectDictionary {
     pub fn new() -> ObjectDictionary {
         ObjectDictionary{ dict: HashMap::new() }
     }
-}
 
-#[cfg(test)]
-mod tests {
-    use crate::od::{ObjectDictionary, Object};
+    pub fn add(&mut self, index: u16, sub_index: u8, value: ObjectValue) {
+        self.dict.insert(ObjectKey{index, sub_index}, value);
+    }
 
-    #[test]
-    fn test_insert_and_get() {
-        let mut od = ObjectDictionary::new();
-        od.dict.insert(0x1000, Object::Unsigned32(0x3));
-        match od.dict.get(&0x1000) {
-            Some(x) => match x {
-                Object::Unsigned32(y) => assert_eq!(0x3, *y),
-                _ => assert!(false)
-            },
-            _ => assert!(false)
+    pub fn write(&mut self, index: u16, sub_index: u8, value: ObjectValue) {
+        if let Some(x) = self.dict.get_mut(&ObjectKey { index, sub_index }) {
+            if std::mem::discriminant(x) == std::mem::discriminant(&value) {
+                *x = value;
+            }
         }
+    }
+
+    pub fn read(&self, index: u16, sub_index: u8) -> Option<&ObjectValue> {
+        return self.dict.get(&ObjectKey{index, sub_index });
     }
 }
