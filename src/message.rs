@@ -14,20 +14,17 @@ pub enum FunctionCode {
     SdoTx,
     SdoRx,
     NmtErrorControl,
-    Unknown
+    Unknown,
 }
 
 pub struct CanMessage {
     can_id: u16,
-    data: Vec<u8>
+    data: Vec<u8>,
 }
 
 impl CanMessage {
     pub fn new(can_id: u16, data: Vec<u8>) -> CanMessage {
-        CanMessage{
-            can_id,
-            data
-        }
+        CanMessage { can_id, data }
     }
 
     pub fn node_id(&self) -> u8 {
@@ -41,7 +38,7 @@ impl CanMessage {
                 0x0 => FunctionCode::Nmt,
                 0x1 => FunctionCode::Sync,
                 0x2 => FunctionCode::Time,
-                _ => FunctionCode::Unknown
+                _ => FunctionCode::Unknown,
             }
         } else {
             match fc {
@@ -57,9 +54,9 @@ impl CanMessage {
                 0xB => FunctionCode::SdoTx,
                 0xC => FunctionCode::SdoRx,
                 0xE => FunctionCode::NmtErrorControl,
-                _ => FunctionCode::Unknown
+                _ => FunctionCode::Unknown,
             }
-        }
+        };
     }
 
     pub fn data_length(&self) -> usize {
@@ -83,7 +80,7 @@ mod tests {
         let msg = CanMessage::new(0x0, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::Nmt => true,
-            _ => false
+            _ => false,
         });
     }
 
@@ -92,7 +89,7 @@ mod tests {
         let msg = CanMessage::new(0x80, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::Sync => true,
-            _ => false
+            _ => false,
         });
     }
 
@@ -101,7 +98,7 @@ mod tests {
         let msg = CanMessage::new(0x100, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::Time => true,
-            _ => false
+            _ => false,
         });
     }
 
@@ -110,7 +107,7 @@ mod tests {
         let msg = CanMessage::new(0x780, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::Unknown => true,
-            _ => false
+            _ => false,
         });
     }
 
@@ -119,7 +116,7 @@ mod tests {
         let msg = CanMessage::new(0xAD, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::Emcy => true,
-            _ => false
+            _ => false,
         });
     }
 
@@ -128,7 +125,7 @@ mod tests {
         let msg = CanMessage::new(0x1AD, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::Pdo1Tx => true,
-            _ => false
+            _ => false,
         });
     }
 
@@ -137,7 +134,7 @@ mod tests {
         let msg = CanMessage::new(0x22D, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::Pdo1Rx => true,
-            _ => false
+            _ => false,
         });
     }
 
@@ -146,7 +143,7 @@ mod tests {
         let msg = CanMessage::new(0x2AD, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::Pdo2Tx => true,
-            _ => false
+            _ => false,
         });
     }
 
@@ -155,7 +152,7 @@ mod tests {
         let msg = CanMessage::new(0x32D, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::Pdo2Rx => true,
-            _ => false
+            _ => false,
         });
     }
 
@@ -164,7 +161,7 @@ mod tests {
         let msg = CanMessage::new(0x3AD, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::Pdo3Tx => true,
-            _ => false
+            _ => false,
         });
     }
 
@@ -173,7 +170,7 @@ mod tests {
         let msg = CanMessage::new(0x42D, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::Pdo3Rx => true,
-            _ => false
+            _ => false,
         });
     }
 
@@ -182,7 +179,7 @@ mod tests {
         let msg = CanMessage::new(0x4AD, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::Pdo4Tx => true,
-            _ => false
+            _ => false,
         });
     }
 
@@ -191,7 +188,7 @@ mod tests {
         let msg = CanMessage::new(0x52D, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::Pdo4Rx => true,
-            _ => false
+            _ => false,
         });
     }
 
@@ -200,7 +197,7 @@ mod tests {
         let msg = CanMessage::new(0x5AD, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::SdoTx => true,
-            _ => false
+            _ => false,
         });
     }
 
@@ -209,7 +206,7 @@ mod tests {
         let msg = CanMessage::new(0x62D, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::SdoRx => true,
-            _ => false
+            _ => false,
         });
     }
 
@@ -218,7 +215,7 @@ mod tests {
         let msg = CanMessage::new(0x72D, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::NmtErrorControl => true,
-            _ => false
+            _ => false,
         });
     }
 
@@ -227,7 +224,7 @@ mod tests {
         let msg = CanMessage::new(0x7AD, Vec::new());
         assert!(match msg.function_code() {
             FunctionCode::Unknown => true,
-            _ => false
+            _ => false,
         });
     }
 

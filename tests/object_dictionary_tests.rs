@@ -3,7 +3,7 @@ extern crate canopen_rs;
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use canopen_rs::od::{ObjectDictionary, ObjectValue, ObjectSubscriber};
+use canopen_rs::od::{ObjectDictionary, ObjectSubscriber, ObjectValue};
 
 struct MySubscriber {
     pub value: i32,
@@ -25,9 +25,9 @@ fn test_object_dictionary_read() {
     match od.read(0x1000, 0x00) {
         Some(x) => match x {
             ObjectValue::Unsigned32(y) => assert_eq!(*y, 0x1234),
-            _ => assert!(false)
+            _ => assert!(false),
         },
-        None => assert!(false)
+        None => assert!(false),
     }
 }
 
@@ -39,9 +39,9 @@ fn test_object_dictionary_write_same_value_type() {
     match od.read(0x1000, 0x00) {
         Some(x) => match x {
             ObjectValue::Unsigned32(y) => assert_eq!(*y, 0x8200),
-            _ => assert!(false)
+            _ => assert!(false),
         },
-        None => assert!(false)
+        None => assert!(false),
     }
 }
 
