@@ -12,4 +12,3 @@ fn test_can_open_controller_basic_usage() {
 
     assert!(msgs.is_empty());
 }
-

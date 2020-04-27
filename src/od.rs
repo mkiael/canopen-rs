@@ -39,7 +39,9 @@ impl Object {
         if std::mem::discriminant(&self.value) == std::mem::discriminant(&value) {
             self.value = value;
             for subscriber in self.subscribers.iter_mut() {
-                subscriber.borrow_mut().object_updated(&self.index, &self.sub_index, &self.value);
+                subscriber
+                    .borrow_mut()
+                    .object_updated(&self.index, &self.sub_index, &self.value);
             }
         }
     }
@@ -59,11 +61,21 @@ pub struct ObjectDictionary {
 
 impl ObjectDictionary {
     pub fn new() -> ObjectDictionary {
-        ObjectDictionary { dict: HashMap::new() }
+        ObjectDictionary {
+            dict: HashMap::new(),
+        }
     }
 
     pub fn add(&mut self, index: u16, sub_index: u8, value: ObjectValue) {
-        self.dict.insert(ObjectKey { index, sub_index }, Object { index, sub_index, value, subscribers: Vec::new()});
+        self.dict.insert(
+            ObjectKey { index, sub_index },
+            Object {
+                index,
+                sub_index,
+                value,
+                subscribers: Vec::new(),
+            },
+        );
     }
 
     pub fn write(&mut self, index: u16, sub_index: u8, value: ObjectValue) {
@@ -75,11 +87,16 @@ impl ObjectDictionary {
     pub fn read(&self, index: u16, sub_index: u8) -> Option<&ObjectValue> {
         match self.dict.get(&ObjectKey { index, sub_index }) {
             Some(obj) => Some(obj.read()),
-            None => None
+            None => None,
         }
     }
 
-    pub fn subscribe(&mut self, index: u16, sub_index: u8, subscriber: Rc<RefCell<dyn ObjectSubscriber>>) {
+    pub fn subscribe(
+        &mut self,
+        index: u16,
+        sub_index: u8,
+        subscriber: Rc<RefCell<dyn ObjectSubscriber>>,
+    ) {
         if let Some(obj) = self.dict.get_mut(&ObjectKey { index, sub_index }) {
             obj.subscribe(subscriber);
         }
