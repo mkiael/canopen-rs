@@ -1,4 +1,4 @@
-pub enum FunctionCode {
+pub enum Cob {
     Nmt,
     Sync,
     Time,
@@ -31,30 +31,30 @@ impl CanMessage {
         (self.can_id as u8) & 0x7Fu8
     }
 
-    pub fn function_code(&self) -> FunctionCode {
+    pub fn cob(&self) -> Cob {
         let fc = (self.can_id >> 7) & 0x000Fu16;
         return if self.node_id() == 0x0 {
             match fc {
-                0x0 => FunctionCode::Nmt,
-                0x1 => FunctionCode::Sync,
-                0x2 => FunctionCode::Time,
-                _ => FunctionCode::Unknown,
+                0x0 => Cob::Nmt,
+                0x1 => Cob::Sync,
+                0x2 => Cob::Time,
+                _ => Cob::Unknown,
             }
         } else {
             match fc {
-                0x1 => FunctionCode::Emcy,
-                0x3 => FunctionCode::Pdo1Tx,
-                0x4 => FunctionCode::Pdo1Rx,
-                0x5 => FunctionCode::Pdo2Tx,
-                0x6 => FunctionCode::Pdo2Rx,
-                0x7 => FunctionCode::Pdo3Tx,
-                0x8 => FunctionCode::Pdo3Rx,
-                0x9 => FunctionCode::Pdo4Tx,
-                0xA => FunctionCode::Pdo4Rx,
-                0xB => FunctionCode::SdoTx,
-                0xC => FunctionCode::SdoRx,
-                0xE => FunctionCode::NmtErrorControl,
-                _ => FunctionCode::Unknown,
+                0x1 => Cob::Emcy,
+                0x3 => Cob::Pdo1Tx,
+                0x4 => Cob::Pdo1Rx,
+                0x5 => Cob::Pdo2Tx,
+                0x6 => Cob::Pdo2Rx,
+                0x7 => Cob::Pdo3Tx,
+                0x8 => Cob::Pdo3Rx,
+                0x9 => Cob::Pdo4Tx,
+                0xA => Cob::Pdo4Rx,
+                0xB => Cob::SdoTx,
+                0xC => Cob::SdoRx,
+                0xE => Cob::NmtErrorControl,
+                _ => Cob::Unknown,
             }
         };
     }
@@ -67,7 +67,7 @@ impl CanMessage {
 #[cfg(test)]
 mod tests {
     use crate::message::CanMessage;
-    use crate::message::FunctionCode;
+    use crate::message::Cob;
 
     #[test]
     fn test_get_node_id() {
@@ -76,154 +76,154 @@ mod tests {
     }
 
     #[test]
-    fn test_get_nmt_function_code() {
+    fn test_get_nmt_cob() {
         let msg = CanMessage::new(0x0, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::Nmt => true,
+        assert!(match msg.cob() {
+            Cob::Nmt => true,
             _ => false,
         });
     }
 
     #[test]
-    fn test_get_sync_function_code() {
+    fn test_get_sync_cob() {
         let msg = CanMessage::new(0x80, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::Sync => true,
+        assert!(match msg.cob() {
+            Cob::Sync => true,
             _ => false,
         });
     }
 
     #[test]
-    fn test_get_time_function_code() {
+    fn test_get_time_cob() {
         let msg = CanMessage::new(0x100, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::Time => true,
+        assert!(match msg.cob() {
+            Cob::Time => true,
             _ => false,
         });
     }
 
     #[test]
-    fn test_get_unknown_broadcast_function_code() {
+    fn test_get_unknown_broadcast_cob() {
         let msg = CanMessage::new(0x780, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::Unknown => true,
+        assert!(match msg.cob() {
+            Cob::Unknown => true,
             _ => false,
         });
     }
 
     #[test]
-    fn test_get_emcy_function_code() {
+    fn test_get_emcy_cob() {
         let msg = CanMessage::new(0xAD, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::Emcy => true,
+        assert!(match msg.cob() {
+            Cob::Emcy => true,
             _ => false,
         });
     }
 
     #[test]
-    fn test_get_pdo1tx_function_code() {
+    fn test_get_pdo1tx_cob() {
         let msg = CanMessage::new(0x1AD, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::Pdo1Tx => true,
+        assert!(match msg.cob() {
+            Cob::Pdo1Tx => true,
             _ => false,
         });
     }
 
     #[test]
-    fn test_get_pdo1rx_function_code() {
+    fn test_get_pdo1rx_cob() {
         let msg = CanMessage::new(0x22D, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::Pdo1Rx => true,
+        assert!(match msg.cob() {
+            Cob::Pdo1Rx => true,
             _ => false,
         });
     }
 
     #[test]
-    fn test_get_pdo2tx_function_code() {
+    fn test_get_pdo2tx_cob() {
         let msg = CanMessage::new(0x2AD, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::Pdo2Tx => true,
+        assert!(match msg.cob() {
+            Cob::Pdo2Tx => true,
             _ => false,
         });
     }
 
     #[test]
-    fn test_get_pdo2rx_function_code() {
+    fn test_get_pdo2rx_cob() {
         let msg = CanMessage::new(0x32D, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::Pdo2Rx => true,
+        assert!(match msg.cob() {
+            Cob::Pdo2Rx => true,
             _ => false,
         });
     }
 
     #[test]
-    fn test_get_pdo3tx_function_code() {
+    fn test_get_pdo3tx_cob() {
         let msg = CanMessage::new(0x3AD, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::Pdo3Tx => true,
+        assert!(match msg.cob() {
+            Cob::Pdo3Tx => true,
             _ => false,
         });
     }
 
     #[test]
-    fn test_get_pdo3rx_function_code() {
+    fn test_get_pdo3rx_cob() {
         let msg = CanMessage::new(0x42D, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::Pdo3Rx => true,
+        assert!(match msg.cob() {
+            Cob::Pdo3Rx => true,
             _ => false,
         });
     }
 
     #[test]
-    fn test_get_pdo4tx_function_code() {
+    fn test_get_pdo4tx_cob() {
         let msg = CanMessage::new(0x4AD, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::Pdo4Tx => true,
+        assert!(match msg.cob() {
+            Cob::Pdo4Tx => true,
             _ => false,
         });
     }
 
     #[test]
-    fn test_get_pdo4rx_function_code() {
+    fn test_get_pdo4rx_cob() {
         let msg = CanMessage::new(0x52D, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::Pdo4Rx => true,
+        assert!(match msg.cob() {
+            Cob::Pdo4Rx => true,
             _ => false,
         });
     }
 
     #[test]
-    fn test_get_sdotx_function_code() {
+    fn test_get_sdotx_cob() {
         let msg = CanMessage::new(0x5AD, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::SdoTx => true,
+        assert!(match msg.cob() {
+            Cob::SdoTx => true,
             _ => false,
         });
     }
 
     #[test]
-    fn test_get_sdorx_function_code() {
+    fn test_get_sdorx_cob() {
         let msg = CanMessage::new(0x62D, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::SdoRx => true,
+        assert!(match msg.cob() {
+            Cob::SdoRx => true,
             _ => false,
         });
     }
 
     #[test]
-    fn test_get_nmt_error_control_function_code() {
+    fn test_get_nmt_error_control_cob() {
         let msg = CanMessage::new(0x72D, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::NmtErrorControl => true,
+        assert!(match msg.cob() {
+            Cob::NmtErrorControl => true,
             _ => false,
         });
     }
 
     #[test]
-    fn test_get_unknown_peer_to_peer_function_code() {
+    fn test_get_unknown_peer_to_peer_cob() {
         let msg = CanMessage::new(0x7AD, Vec::new());
-        assert!(match msg.function_code() {
-            FunctionCode::Unknown => true,
+        assert!(match msg.cob() {
+            Cob::Unknown => true,
             _ => false,
         });
     }
