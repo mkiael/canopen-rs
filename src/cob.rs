@@ -71,7 +71,7 @@ fn get_base_cob_id(cob: Cob) -> u16 {
     return (function_code as u16) << 7;
 }
 
-fn get_broadcast_cob_id(cob: Cob) -> u16 {
+pub fn get_broadcast_cob_id(cob: Cob) -> u16 {
     if is_broadcast_cob(cob) {
         return get_base_cob_id(cob);
     } else {
@@ -79,7 +79,7 @@ fn get_broadcast_cob_id(cob: Cob) -> u16 {
     }
 }
 
-fn get_p2p_cob_id(node_id: u8, cob: Cob) -> u16 {
+pub fn get_p2p_cob_id(node_id: u8, cob: Cob) -> u16 {
     if is_p2p_cob(cob) {
         return get_base_cob_id(cob) + (node_id as u16);
     } else {
