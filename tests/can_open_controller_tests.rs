@@ -1,14 +1,46 @@
 extern crate canopen_rs;
 
-use canopen_rs::controller::CanOpenController;
-use canopen_rs::message::CanMessage;
+use canopen_rs::cob::Cob;
+use canopen_rs::controller::{CanOpenController, NmtState};
 
 #[test]
-fn test_can_open_controller_basic_usage() {
-    let mut controller = CanOpenController::new();
-    controller.init();
-    controller.process(CanMessage::from_can_id(0x0, vec![]));
-    let msgs = controller.fetch();
+fn test_can_open_controller_init() {
+    let mut controller = CanOpenController::new(0x1A);
 
-    assert!(msgs.is_empty());
+    controller.init();
+    let mut msgs = controller.fetch();
+
+    if let Some(msg) = msgs.pop() {
+        assert_eq!(msg.node_id(), 0x1A);
+        assert_eq!(msg.cob(), Cob::NmtErrorControl);
+        assert_eq!(*msg.data(), vec![0x0]);
+    } else {
+        assert!(false);
+    }
+}
+
+#[test]
+fn test_can_open_controller_nmt_state() {
+    let mut controller = CanOpenController::new(0x1A);
+
+    assert_eq!(controller.nmt_state(), NmtState::Initialising);
+
+    controller.init();
+
+    assert_eq!(controller.nmt_state(), NmtState::PreOperational);
+}
+
+#[test]
+fn test_can_open_controller_consume_messages() {
+    let mut controller = CanOpenController::new(0x1A);
+
+    controller.init();
+
+    let first_msgs = controller.fetch();
+
+    assert!(!first_msgs.is_empty());
+
+    let second_msgs = controller.fetch();
+
+    assert!(second_msgs.is_empty());
 }

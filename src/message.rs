@@ -52,6 +52,10 @@ impl CanMessage {
         }
     }
 
+    pub fn data(&self) -> &Vec<u8> {
+        &self.data
+    }
+
     pub fn data_length(&self) -> usize {
         self.data.len()
     }
@@ -168,6 +172,13 @@ mod tests {
     fn test_get_unknown_peer_to_peer_cob() {
         let msg = CanMessage::from_can_id(0x7AD, Vec::new());
         assert_eq!(msg.cob(), Cob::Unknown);
+    }
+
+    #[test]
+    fn test_get_data() {
+        let data = vec![0x1, 0x3, 0x3, 0x7];
+        let msg = CanMessage::from_can_id(0x1B4, data);
+        assert_eq!(*msg.data(), vec![0x1, 0x3, 0x3, 0x7]);
     }
 
     #[test]
