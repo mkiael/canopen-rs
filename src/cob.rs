@@ -68,12 +68,12 @@ fn is_p2p_cob(cob: Cob) -> bool {
 
 fn get_base_cob_id(cob: Cob) -> u16 {
     let function_code = get_function_code(cob);
-    return (function_code as u16) << 7;
+    (function_code as u16) << 7
 }
 
 pub fn get_broadcast_cob_id(cob: Cob) -> u16 {
     if is_broadcast_cob(cob) {
-        return get_base_cob_id(cob);
+        get_base_cob_id(cob)
     } else {
         panic!("Not a broadcast cob");
     }
@@ -81,7 +81,7 @@ pub fn get_broadcast_cob_id(cob: Cob) -> u16 {
 
 pub fn get_p2p_cob_id(node_id: u8, cob: Cob) -> u16 {
     if is_p2p_cob(cob) {
-        return get_base_cob_id(cob) + (node_id as u16);
+        get_base_cob_id(cob) + (node_id as u16)
     } else {
         panic!("Not a peer to peer cob");
     }
