@@ -89,7 +89,10 @@ fn get_p2p_cob_id(node_id: u8, cob: Cob) -> u16 {
 
 #[cfg(test)]
 mod tests {
-    use crate::cob::{Cob, get_function_code, get_base_cob_id, get_broadcast_cob_id, get_p2p_cob_id, is_broadcast_cob, is_p2p_cob};
+    use crate::cob::{
+        get_base_cob_id, get_broadcast_cob_id, get_function_code, get_p2p_cob_id, is_broadcast_cob,
+        is_p2p_cob, Cob,
+    };
 
     #[test]
     fn test_get_function_code() {

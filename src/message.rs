@@ -49,8 +49,8 @@ impl CanMessage {
 
 #[cfg(test)]
 mod tests {
-    use crate::message::CanMessage;
     use crate::cob::Cob;
+    use crate::message::CanMessage;
 
     #[test]
     fn test_get_node_id() {
