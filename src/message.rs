@@ -1,4 +1,4 @@
-use crate::cob::{Cob, get_broadcast_cob_id, get_p2p_cob_id};
+use crate::cob::{get_broadcast_cob_id, get_p2p_cob_id, Cob};
 
 pub struct CanMessage {
     can_id: u16,
