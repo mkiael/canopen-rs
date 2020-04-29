@@ -71,154 +71,103 @@ mod tests {
     #[test]
     fn test_get_nmt_cob() {
         let msg = CanMessage::from_can_id(0x0, Vec::new());
-        assert!(match msg.cob() {
-            Cob::Nmt => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::Nmt);
     }
 
     #[test]
     fn test_get_sync_cob() {
         let msg = CanMessage::from_can_id(0x80, Vec::new());
-        assert!(match msg.cob() {
-            Cob::Sync => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::Sync);
     }
 
     #[test]
     fn test_get_time_cob() {
         let msg = CanMessage::from_can_id(0x100, Vec::new());
-        assert!(match msg.cob() {
-            Cob::Time => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::Time);
     }
 
     #[test]
     fn test_get_unknown_broadcast_cob() {
         let msg = CanMessage::from_can_id(0x780, Vec::new());
-        assert!(match msg.cob() {
-            Cob::Unknown => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::Unknown);
     }
 
     #[test]
     fn test_get_emcy_cob() {
         let msg = CanMessage::from_can_id(0xAD, Vec::new());
-        assert!(match msg.cob() {
-            Cob::Emcy => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::Emcy);
     }
 
     #[test]
     fn test_get_pdo1tx_cob() {
         let msg = CanMessage::from_can_id(0x1AD, Vec::new());
-        assert!(match msg.cob() {
-            Cob::Pdo1Tx => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::Pdo1Tx);
     }
 
     #[test]
     fn test_get_pdo1rx_cob() {
         let msg = CanMessage::from_can_id(0x22D, Vec::new());
-        assert!(match msg.cob() {
-            Cob::Pdo1Rx => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::Pdo1Rx);
     }
 
     #[test]
     fn test_get_pdo2tx_cob() {
         let msg = CanMessage::from_can_id(0x2AD, Vec::new());
-        assert!(match msg.cob() {
-            Cob::Pdo2Tx => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::Pdo2Tx);
     }
 
     #[test]
     fn test_get_pdo2rx_cob() {
         let msg = CanMessage::from_can_id(0x32D, Vec::new());
-        assert!(match msg.cob() {
-            Cob::Pdo2Rx => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::Pdo2Rx);
     }
 
     #[test]
     fn test_get_pdo3tx_cob() {
         let msg = CanMessage::from_can_id(0x3AD, Vec::new());
-        assert!(match msg.cob() {
-            Cob::Pdo3Tx => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::Pdo3Tx);
     }
 
     #[test]
     fn test_get_pdo3rx_cob() {
         let msg = CanMessage::from_can_id(0x42D, Vec::new());
-        assert!(match msg.cob() {
-            Cob::Pdo3Rx => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::Pdo3Rx);
     }
 
     #[test]
     fn test_get_pdo4tx_cob() {
         let msg = CanMessage::from_can_id(0x4AD, Vec::new());
-        assert!(match msg.cob() {
-            Cob::Pdo4Tx => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::Pdo4Tx);
     }
 
     #[test]
     fn test_get_pdo4rx_cob() {
         let msg = CanMessage::from_can_id(0x52D, Vec::new());
-        assert!(match msg.cob() {
-            Cob::Pdo4Rx => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::Pdo4Rx);
     }
 
     #[test]
     fn test_get_sdotx_cob() {
         let msg = CanMessage::from_can_id(0x5AD, Vec::new());
-        assert!(match msg.cob() {
-            Cob::SdoTx => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::SdoTx);
     }
 
     #[test]
     fn test_get_sdorx_cob() {
         let msg = CanMessage::from_can_id(0x62D, Vec::new());
-        assert!(match msg.cob() {
-            Cob::SdoRx => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::SdoRx);
     }
 
     #[test]
     fn test_get_nmt_error_control_cob() {
         let msg = CanMessage::from_can_id(0x72D, Vec::new());
-        assert!(match msg.cob() {
-            Cob::NmtErrorControl => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::NmtErrorControl);
     }
 
     #[test]
     fn test_get_unknown_peer_to_peer_cob() {
         let msg = CanMessage::from_can_id(0x7AD, Vec::new());
-        assert!(match msg.cob() {
-            Cob::Unknown => true,
-            _ => false,
-        });
+        assert_eq!(msg.cob(), Cob::Unknown);
     }
 
     #[test]
