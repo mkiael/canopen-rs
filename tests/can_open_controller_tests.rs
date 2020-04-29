@@ -7,7 +7,7 @@ use canopen_rs::message::CanMessage;
 fn test_can_open_controller_basic_usage() {
     let mut controller = CanOpenController::new();
     controller.init();
-    controller.process(CanMessage::new(0x0, vec![]));
+    controller.process(CanMessage::from_can_id(0x0, vec![]));
     let msgs = controller.fetch();
 
     assert!(msgs.is_empty());
