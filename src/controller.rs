@@ -2,17 +2,20 @@ use crate::message::CanMessage;
 
 #[derive(Default)]
 pub struct CanOpenController {
-    pub outgoing_messages: Vec<CanMessage>,
+    node_id: u8,
+    outgoing_messages: Vec<CanMessage>,
 }
 
 impl CanOpenController {
-    pub fn new() -> CanOpenController {
+    pub fn new(node_id: u8) -> CanOpenController {
         CanOpenController {
+            node_id,
             outgoing_messages: Vec::new(),
         }
     }
 
-    pub fn init(&mut self) {}
+    pub fn init(&mut self) {
+    }
 
     pub fn process(&mut self, _can_message: CanMessage) {}
 
