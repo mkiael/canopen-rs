@@ -10,7 +10,7 @@ struct MySubscriber {
 }
 
 impl ObjectSubscriber for MySubscriber {
-    fn object_updated(&mut self, _index: &u16, _sub_index: &u8, value: &ObjectValue) {
+    fn object_updated(&mut self, _index: u16, _sub_index: u8, value: &ObjectValue) {
         match value {
             ObjectValue::Integer32(v) => self.value = *v,
             _ => {}

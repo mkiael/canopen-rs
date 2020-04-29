@@ -1,5 +1,6 @@
 use crate::message::CanMessage;
 
+#[derive(Default)]
 pub struct CanOpenController {
     pub outgoing_messages: Vec<CanMessage>,
 }
@@ -22,6 +23,6 @@ impl CanOpenController {
         for msg_it in self.outgoing_messages.drain(..) {
             messages.push(msg_it);
         }
-        return messages;
+        messages
     }
 }

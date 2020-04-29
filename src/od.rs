@@ -24,7 +24,7 @@ pub enum ObjectValue {
 }
 
 pub trait ObjectSubscriber {
-    fn object_updated(&mut self, index: &u16, sub_index: &u8, value: &ObjectValue);
+    fn object_updated(&mut self, index: u16, sub_index: u8, value: &ObjectValue);
 }
 
 struct Object {
@@ -41,13 +41,13 @@ impl Object {
             for subscriber in self.subscribers.iter_mut() {
                 subscriber
                     .borrow_mut()
-                    .object_updated(&self.index, &self.sub_index, &self.value);
+                    .object_updated(self.index, self.sub_index, &self.value);
             }
         }
     }
 
     pub fn read(&self) -> &ObjectValue {
-        return &self.value;
+        &self.value
     }
 
     pub fn subscribe(&mut self, subscriber: Rc<RefCell<dyn ObjectSubscriber>>) {
@@ -55,6 +55,7 @@ impl Object {
     }
 }
 
+#[derive(Default)]
 pub struct ObjectDictionary {
     dict: HashMap<ObjectKey, Object>,
 }

@@ -26,7 +26,7 @@ impl CanMessage {
 
     pub fn cob(&self) -> Cob {
         let fc = (self.can_id >> 7) & 0x000Fu16;
-        return if self.node_id() == 0x0 {
+        if self.node_id() == 0x0 {
             match fc {
                 0x0 => Cob::Nmt,
                 0x1 => Cob::Sync,
@@ -49,7 +49,7 @@ impl CanMessage {
                 0xE => Cob::NmtErrorControl,
                 _ => Cob::Unknown,
             }
-        };
+        }
     }
 
     pub fn data_length(&self) -> usize {
