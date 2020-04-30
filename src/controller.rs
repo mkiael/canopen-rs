@@ -64,6 +64,7 @@ impl CanOpenController {
         match self.node_control.process(can_message) {
             NodeCommand::StartNode => self.set_nmt_state(NmtState::Operational),
             NodeCommand::StopNode => self.set_nmt_state(NmtState::Stopped),
+            NodeCommand::EnterPreOperational => self.set_nmt_state(NmtState::PreOperational),
             _ => {}
         }
     }

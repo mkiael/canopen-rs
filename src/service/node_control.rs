@@ -5,7 +5,7 @@ use crate::message::CanMessage;
 pub enum NodeCommand {
     StartNode,
     StopNode,
-    //EnterPreOperational,
+    EnterPreOperational,
     //ResetNode,
     //ResetCommunication,
     None,
@@ -25,6 +25,7 @@ impl NodeControl {
             match can_message.data()[0] {
                 0x1 => NodeCommand::StartNode,
                 0x2 => NodeCommand::StopNode,
+                0x80 => NodeCommand::EnterPreOperational,
                 _ => NodeCommand::None,
             }
         } else {
@@ -60,6 +61,11 @@ mod tests {
     #[test]
     fn test_stop_remote_node() {
         test_node_command(NodeCommand::StopNode, 0x2);
+    }
+
+    #[test]
+    fn test_enter_pre_operational() {
+        test_node_command(NodeCommand::EnterPreOperational, 0x80);
     }
 
     #[test]
