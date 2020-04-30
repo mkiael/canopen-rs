@@ -6,8 +6,8 @@ pub enum NodeCommand {
     StartNode,
     StopNode,
     EnterPreOperational,
-    //ResetNode,
-    //ResetCommunication,
+    ResetNode,
+    ResetCommunication,
     None,
 }
 
@@ -26,6 +26,8 @@ impl NodeControl {
                 0x1 => NodeCommand::StartNode,
                 0x2 => NodeCommand::StopNode,
                 0x80 => NodeCommand::EnterPreOperational,
+                0x81 => NodeCommand::ResetNode,
+                0x82 => NodeCommand::ResetCommunication,
                 _ => NodeCommand::None,
             }
         } else {
@@ -66,6 +68,16 @@ mod tests {
     #[test]
     fn test_enter_pre_operational() {
         test_node_command(NodeCommand::EnterPreOperational, 0x80);
+    }
+
+    #[test]
+    fn test_reset_node() {
+        test_node_command(NodeCommand::ResetNode, 0x81);
+    }
+
+    #[test]
+    fn test_reset_communication() {
+        test_node_command(NodeCommand::ResetCommunication, 0x82);
     }
 
     #[test]
