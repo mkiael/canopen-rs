@@ -2,6 +2,7 @@ extern crate canopen_rs;
 
 use canopen_rs::cob::Cob;
 use canopen_rs::controller::{CanOpenController, NmtState};
+use canopen_rs::message::CanMessage;
 
 #[test]
 fn test_can_open_controller_init() {
@@ -43,4 +44,14 @@ fn test_can_open_controller_consume_messages() {
     let second_msgs = controller.fetch();
 
     assert!(second_msgs.is_empty());
+}
+
+#[test]
+fn test_can_open_controller_enter_operational() {
+    let mut controller = CanOpenController::new(0x1A);
+
+    controller.init();
+    controller.process(CanMessage::from_cob(Cob::Nmt, vec![0x1, 0x1A]));
+
+    assert_eq!(controller.nmt_state(), NmtState::Operational);
 }
