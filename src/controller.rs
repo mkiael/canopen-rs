@@ -1,17 +1,20 @@
 use crate::cob::Cob;
 use crate::message::CanMessage;
+use crate::service::node_control::NodeCommand;
+use crate::service::node_control::NodeControl;
 
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum NmtState {
     Initialising,
     PreOperational,
-    //Operational,
+    Operational,
     //Stopped
 }
 
 pub struct CanOpenController {
     node_id: u8,
     nmt_state: NmtState,
+    node_control: NodeControl,
     outgoing_messages: Vec<CanMessage>,
 }
 
@@ -19,6 +22,7 @@ impl CanOpenController {
     pub fn new(node_id: u8) -> CanOpenController {
         CanOpenController {
             node_id,
+            node_control: NodeControl::new(node_id),
             nmt_state: NmtState::Initialising,
             outgoing_messages: Vec::new(),
         }
@@ -36,7 +40,11 @@ impl CanOpenController {
         ));
     }
 
-    pub fn process(&mut self, _can_message: CanMessage) {}
+    pub fn process(&mut self, can_message: CanMessage) {
+        if let Cob::Nmt = can_message.cob() {
+            self.execute_node_control(can_message)
+        }
+    }
 
     pub fn update(&mut self, _dt: std::time::Duration) {}
 
@@ -50,5 +58,15 @@ impl CanOpenController {
 
     pub fn nmt_state(&self) -> NmtState {
         self.nmt_state
+    }
+
+    fn execute_node_control(&mut self, can_message: CanMessage) {
+        if let NodeCommand::ChangeNmtState(nmt_state) = self.node_control.process(can_message) {
+            self.update_nmt_state(nmt_state)
+        }
+    }
+
+    fn update_nmt_state(&mut self, nmt_state: NmtState) {
+        self.nmt_state = nmt_state;
     }
 }
