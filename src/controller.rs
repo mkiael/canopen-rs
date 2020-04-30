@@ -61,12 +61,13 @@ impl CanOpenController {
     }
 
     fn execute_node_control(&mut self, can_message: CanMessage) {
-        if let NodeCommand::ChangeNmtState(nmt_state) = self.node_control.process(can_message) {
-            self.update_nmt_state(nmt_state)
+        match self.node_control.process(can_message) {
+            NodeCommand::StartNode => self.set_nmt_state(NmtState::Operational),
+            _ => {}
         }
     }
 
-    fn update_nmt_state(&mut self, nmt_state: NmtState) {
+    fn set_nmt_state(&mut self, nmt_state: NmtState) {
         self.nmt_state = nmt_state;
     }
 }

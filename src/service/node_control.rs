@@ -1,10 +1,13 @@
 use crate::cob::Cob;
-use crate::controller::NmtState;
 use crate::message::CanMessage;
 
 #[derive(PartialEq, Debug)]
 pub enum NodeCommand {
-    ChangeNmtState(NmtState),
+    StartNode,
+    //StopNode,
+    //EnterPreOperational,
+    //ResetNode,
+    //ResetCommunication,
     None,
 }
 
@@ -20,7 +23,7 @@ impl NodeControl {
     pub fn process(&self, can_message: CanMessage) -> NodeCommand {
         if self.is_message_valid(&can_message) {
             match can_message.data()[0] {
-                0x1 => NodeCommand::ChangeNmtState(NmtState::Operational),
+                0x1 => NodeCommand::StartNode,
                 _ => NodeCommand::None,
             }
         } else {
@@ -38,7 +41,6 @@ impl NodeControl {
 #[cfg(test)]
 mod tests {
     use crate::cob::Cob;
-    use crate::controller::NmtState;
     use crate::message::CanMessage;
     use crate::service::node_control::NodeCommand;
     use crate::service::node_control::NodeControl;
@@ -47,11 +49,7 @@ mod tests {
     fn test_start_remote_node() {
         let node_control = NodeControl::new(0x4);
         let cmd = node_control.process(CanMessage::from_cob(Cob::Nmt, vec![0x1, 0x4]));
-        if let NodeCommand::ChangeNmtState(nmt_state) = cmd {
-            assert_eq!(nmt_state, NmtState::Operational);
-        } else {
-            assert!(false);
-        }
+        assert_eq!(cmd, NodeCommand::StartNode);
     }
 
     #[test]
