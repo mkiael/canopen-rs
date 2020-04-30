@@ -8,7 +8,7 @@ pub enum NmtState {
     Initialising,
     PreOperational,
     Operational,
-    //Stopped
+    Stopped
 }
 
 pub struct CanOpenController {
@@ -63,6 +63,7 @@ impl CanOpenController {
     fn execute_node_control(&mut self, can_message: CanMessage) {
         match self.node_control.process(can_message) {
             NodeCommand::StartNode => self.set_nmt_state(NmtState::Operational),
+            NodeCommand::StopNode => self.set_nmt_state(NmtState::Stopped),
             _ => {}
         }
     }

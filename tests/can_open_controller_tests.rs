@@ -55,3 +55,13 @@ fn test_can_open_controller_enter_operational() {
 
     assert_eq!(controller.nmt_state(), NmtState::Operational);
 }
+
+#[test]
+fn test_can_open_controller_stopped() {
+    let mut controller = CanOpenController::new(0x1A);
+
+    controller.init();
+    controller.process(CanMessage::from_cob(Cob::Nmt, vec![0x2, 0x1A]));
+
+    assert_eq!(controller.nmt_state(), NmtState::Stopped);
+}
