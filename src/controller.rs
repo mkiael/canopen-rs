@@ -1,7 +1,6 @@
 use crate::cob::Cob;
 use crate::message::CanMessage;
-use crate::service::node_control::NodeCommand;
-use crate::service::node_control::NodeControl;
+use crate::service::node_control::*;
 
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum NmtState {
@@ -14,7 +13,6 @@ pub enum NmtState {
 pub struct CanOpenController {
     node_id: u8,
     nmt_state: NmtState,
-    node_control: NodeControl,
     outgoing_messages: Vec<CanMessage>,
 }
 
@@ -22,7 +20,6 @@ impl CanOpenController {
     pub fn new(node_id: u8) -> CanOpenController {
         CanOpenController {
             node_id,
-            node_control: NodeControl::new(node_id),
             nmt_state: NmtState::Initialising,
             outgoing_messages: Vec::new(),
         }
@@ -36,7 +33,14 @@ impl CanOpenController {
 
     pub fn process(&mut self, can_message: CanMessage) {
         if let Cob::Nmt = can_message.cob() {
-            self.execute_node_control(can_message)
+            match handle_nmt_message(self.node_id, can_message) {
+                NodeCommand::StartNode => self.set_nmt_state(NmtState::Operational),
+                NodeCommand::StopNode => self.set_nmt_state(NmtState::Stopped),
+                NodeCommand::EnterPreOperational => self.set_nmt_state(NmtState::PreOperational),
+                NodeCommand::ResetNode => self.reset_node(),
+                NodeCommand::ResetCommunication => self.reset_communication(),
+                _ => {}
+            }
         }
     }
 
@@ -52,17 +56,6 @@ impl CanOpenController {
 
     pub fn nmt_state(&self) -> NmtState {
         self.nmt_state
-    }
-
-    fn execute_node_control(&mut self, can_message: CanMessage) {
-        match self.node_control.process(can_message) {
-            NodeCommand::StartNode => self.set_nmt_state(NmtState::Operational),
-            NodeCommand::StopNode => self.set_nmt_state(NmtState::Stopped),
-            NodeCommand::EnterPreOperational => self.set_nmt_state(NmtState::PreOperational),
-            NodeCommand::ResetNode => self.reset_node(),
-            NodeCommand::ResetCommunication => self.reset_communication(),
-            _ => {}
-        }
     }
 
     fn set_nmt_state(&mut self, nmt_state: NmtState) {
